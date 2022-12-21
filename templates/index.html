@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>House Price Predictor</title>
+</head>
+
+<body style="background-color: rgb(123, 177, 132);">
+    <div class="container">
+        <div class="row">
+            <div class="card" style="width: 100%; height: 100%; margin-top: 15px;">
+
+                <h2 style="text-align: center;">Welcome to House Price Predictor</h2>
+
+                <img src="https://images.beazer.com/347809a3-364c-4f35-a938-ccf04b6d1ff7-c" alt="" style="height: 310px; width: 100%;">
+
+            </div>
+            <div class="card-body">
+                <form method="post" accept-charset="utf-8">
+                    <div class="row">
+                        <div class="col-md-6 form-group" style="text-align: center;">
+
+
+                            <label> <b>Select The Location:</b> </label>
+                            <select class="select-picker form-control" name="location" id="location" required class="form-control">
+
+                                {%for location in locations%}
+                                <option value="{{location}}">{{location}}</option>
+
+                                {%endfor%}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 form-group" style="text-align: center;">
+
+                            <label> <b>Enter BHK (1 to 16):</b> </label>
+                            <input type="number" id="bhk" name="bhk" class="form-control is-valid" placeholder="Enter BHK"  min="1" max="16" required>
+                        </div>
+                        <div class="col-md-6 form-group" style="text-align: center;">
+
+<!--                           -->
+<!--    <label for="validationServer01" class="form-label">First name</label>-->
+<!--    <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required>-->
+<!--    -->
+
+                                 <label class="form-label"> <b>Enter Number of Bathrooms(1 to 16):</b> </label>
+                                <br>
+                            <input type="number" id="bath" name="bath" class="form-control is-valid" placeholder="Enter No. of bathrooms"  min="1" max="16" required>
+
+
+                            <
+
+
+                        </div>
+                        <div class="col-md-6 form-group" style="text-align: center;">
+
+                            <label> <b>Enter Total Square feet (300 to 30000):</b> </label>
+                            <input type="number" id="total_sqft" name="total_sqft" class="form-control is-valid" placeholder="Enter Total Square Feet"  min="300" max="30000" required >
+                        </div>
+
+                        <div class="col-md-12 form-group" >
+                            <button type="button" class="btn btn-primary from-control" onclick="send_data()" style="margin-left: 41%; width: 200px;" >Predict Price</button>
+                        <!-- <button class="btn btn-primary from-control" onclick="send_data()" >Predict Price</button> -->
+                        </div>
+                    </div>
+
+
+                </form>
+
+                <div class="col-md-12 " style="text-align: center;" >
+
+                    <h3><span id="prediction"></span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+<script>
+    function form_handler(event){
+
+        event.preventDefault();
+    }
+
+    function send_data(){
+        document.querySelector('form').addEventListener("submit",form_handler);
+
+        var fd=new FormData(document.querySelector('form'));
+        var xhr=new XMLHttpRequest();
+        xhr.open('POST','/predict',true);
+        document.getElementById("prediction").innerHTML="Wait Prediction Price!!!"
+
+        xhr.onreadystatechange= function(){
+            if(xhr.readyState==XMLHttpRequest.DONE){
+
+                document.getElementById('prediction').innerHTML="Prediction ₨: "+xhr.responseText;
+            }
+        };
+
+        xhr.onload=function(){};
+        xhr.send(fd);
+    }
+</script>
+</html>
